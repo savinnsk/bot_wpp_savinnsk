@@ -1,0 +1,3 @@
+exports.loadCommomFunctions = ({ socket, messages }) => {
+    
+};
