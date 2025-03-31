@@ -1,7 +1,7 @@
-const { TIMEOUT_IN_MILLISECONDS_BY_EVENT } = require("./config");
-const { onMessagesUpsert } = require("./middlewares/onMessagesUpsert");
+import { TIMEOUT_IN_MILLISECONDS_BY_EVENT } from "./config.ts";
+import { onMessagesUpsert } from "./middlewares/onMessagesUpsert.ts";
 
-exports.load = (socket) => {
+export const load = (socket) => {
     socket.ev.on("messages.upsert", ({ messages }) => {
         setTimeout(() => {
             onMessagesUpsert({ socket, messages });

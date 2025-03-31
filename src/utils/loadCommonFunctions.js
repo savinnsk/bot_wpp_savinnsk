@@ -1,3 +1,0 @@
-exports.loadCommomFunctions = ({ socket, messages }) => {
-    
-};

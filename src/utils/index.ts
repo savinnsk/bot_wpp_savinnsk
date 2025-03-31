@@ -1,8 +1,8 @@
-const readline = require("readline"); 
+import readline from "readline"; 
 
-exports.questions = (message) => {
+export const questions = (message) => {
     const rl =  readline.createInterface({
-        input: process.stdi,
+        input: process.stdin,
         output: process.stdout, 
     });
 
@@ -10,9 +10,9 @@ exports.questions = (message) => {
 
 };
 
-exports.onlyNumbers = (text) => text.replace(/[^0-9]/g, "");
+export const onlyNumbers = (text) => text.replace(/[^0-9]/g, "");
 
-exports.extractDataFromMessage = (webMessage) => {
+export const extractDataFromMessage = (webMessage) => {
     const textMessage = webMessage .message?.conversation;
     const extendedTextMessage = webMessage.message?.extendedTextMessage
     const extendedTextMessageText = extendedTextMessage?.text;
@@ -47,7 +47,7 @@ exports.extractDataFromMessage = (webMessage) => {
     const [command, ...args] = fullMessage.split(" ");
     const prefix = command.charAt(0);
 
-    const commandWithoutPrefix = command.replace(new RegExp(`^[${PREFIX}]+`));
+    const commandWithoutPrefix = command.replace(new RegExp(`^[${prefix}]+`));
 
     return {
         remoteJid: webMessage?.key?.remoteJid,
