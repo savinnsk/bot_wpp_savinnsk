@@ -13,6 +13,13 @@ app.listen(PORT, () => {
 });
 
 
+app.get("/", (req, res) => {
+    res.send("Servidor rodando...");
+});
+
+app.get("/health", (req, res) => {
+    res.json({ status: "ok", message: "Servidor ativo!" });
+});
 
 async function start() {
     const socket = await connect(app);

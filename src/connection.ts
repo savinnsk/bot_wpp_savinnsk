@@ -30,17 +30,9 @@ export const connect = async (app) => {
     socket.ev.on("connection.update", (update) => {
         const { connection, lastDisconnect ,  qr } = update; 
 
-        socket.logger.info(socket.requestPairingCode, `${socket.requestPairingCode} 2: ${qr}`)
-        if (qr) {
-            qrcode.toDataURL(qr, (err, url) => {
-                if (!err) {
-                    qrCodeData = url;
-                }
-            });
-
-            
-        }
-
+    
+        
+      
         if (connection == "close" ) {
             const shouldReconnect = 
                 lastDisconnect?.error?.cause != DisconnectReason.loggedOut;
@@ -49,6 +41,7 @@ export const connect = async (app) => {
                 connect(app);
             }
         }
+        console.log({qr, test : socket.requestPairingCode})
     });
 
     app.get("/qr", (req, res) => {
