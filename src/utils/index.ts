@@ -1,5 +1,5 @@
 import { proto } from "baileys";
-import readline from "readline"; 
+import * as readline from "readline"; 
 import { MessageFormatted } from "../load";
 
 

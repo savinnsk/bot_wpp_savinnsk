@@ -1,5 +1,5 @@
 import {  makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason } from '@whiskeysockets/baileys';
-import path from 'path';
+import * as path from 'path';
 import pino from 'pino';
 
 export const connect = async () => {
