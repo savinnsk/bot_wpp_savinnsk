@@ -8,7 +8,7 @@ let qrCodeData = "";
 export const connect = async (app) => {
 
     const { state, saveCreds } = await useMultiFileAuthState(
-        path.resolve(path.dirname("."), '..', "assets", "auth", "baileys")
+        path.resolve(path.dirname("."), '..', "assets", "auth", "bailey")
     );
 
     const {version} = await fetchLatestBaileysVersion();
@@ -30,8 +30,20 @@ export const connect = async (app) => {
     socket.ev.on("connection.update", (update) => {
         const { connection, lastDisconnect ,  qr } = update; 
 
+        if (qr) {
+            const filePath = path.join(__dirname, "public", "qrcode.png");
     
-        
+            // Converte o QR Code para uma imagem PNG e salva no servidor
+            qrcode.toFile(filePath, qr, (err) => {
+                if (err) {
+                    console.error("Erro ao salvar o QR Code:", err);
+                } else {
+                    console.log("QR Code salvo em:", filePath);
+                }
+            });
+        }
+    
+    
       
         if (connection == "close" ) {
             const shouldReconnect = 
@@ -41,16 +53,11 @@ export const connect = async (app) => {
                 connect(app);
             }
         }
-        console.log({qr, test : socket.requestPairingCode})
+        
+        
     });
 
-    app.get("/qr", (req, res) => {
-        res.json({ qr: qrCodeData });
-    });
-    app.get("/", (req, res) => {
-        res.sendFile(path.join(__dirname, "public/index.html"));
-    });
-   
+
 
     //socket.ev.on("messages.update", (message) => {
      //   console.log("messages.update"); 
