@@ -18,6 +18,10 @@ app.get("/", (req, res) => {
     return res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+app.get("/qr", (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public', 'qrcode.png'));
+});
+
 
 async function start() {
     const socket = await connect(app);

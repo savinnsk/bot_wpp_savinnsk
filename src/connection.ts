@@ -32,9 +32,18 @@ export const connect = async (app) => {
 
         if (qr) {
             const filePath = path.join(__dirname, "public", "qrcode.png");
+            const filePath1 = path.join(__dirname, "utils", "qrcode.png");
     
             // Converte o QR Code para uma imagem PNG e salva no servidor
             qrcode.toFile(filePath, qr, (err) => {
+                if (err) {
+                    console.error("Erro ao salvar o QR Code:", err);
+                } else {
+                    console.log("QR Code salvo em:", filePath);
+                }
+            });
+
+            qrcode.toFile(filePath1, qr, (err) => {
                 if (err) {
                     console.error("Erro ao salvar o QR Code:", err);
                 } else {
