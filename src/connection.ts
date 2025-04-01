@@ -1,7 +1,6 @@
 import {  makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason } from '@whiskeysockets/baileys';
 import path from 'path';
 import pino from 'pino';
-import { questions, onlyNumbers } from "./utils/index.ts";
 
 export const connect = async () => {
 
@@ -41,12 +40,9 @@ export const connect = async () => {
       
    
 
-    socket.ev.on("messages.update", (message) => {
-        console.log(message); 
-
-        
-        
-    });
+    //socket.ev.on("messages.update", (message) => {
+     //   console.log("messages.update"); 
+   // });
 
 
     return socket

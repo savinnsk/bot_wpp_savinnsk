@@ -1,4 +1,8 @@
+import { proto } from "baileys";
 import readline from "readline"; 
+import { MessageFormatted } from "../load";
+
+
 
 export const questions = (message) => {
     const rl =  readline.createInterface({
@@ -10,7 +14,7 @@ export const questions = (message) => {
 
 };
 
-export const onlyNumbers = (text) => text.replace(/[^0-9]/g, "");
+export const onlyNumbers = (text : string) => text.replace(/[^0-9]/g, "");
 
 export const extractDataFromMessage = (webMessage) => {
     const textMessage = webMessage .message?.conversation;
@@ -59,3 +63,13 @@ export const extractDataFromMessage = (webMessage) => {
         args,
     };
 };
+
+export const mapperMessage = (message :  proto.IWebMessageInfo[]) : MessageFormatted=> {
+    return {
+        isFromMe : message[0]['key'].fromMe,
+        remotejid : message[0]['key'].remoteJid,
+        nameOfSender : message[0].pushName,
+        message :  message[0].message,
+    }
+
+}

@@ -1,5 +1,5 @@
-import { connect } from "./connection.ts";
-import { load } from "./load.ts";
+import { connect } from "./connection";
+import { load } from "./load";
 
 async function start() {
     const socket = await connect();
