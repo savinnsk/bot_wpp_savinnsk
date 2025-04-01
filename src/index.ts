@@ -3,7 +3,7 @@ import { load } from "./load";
 import express from "express"
 
 const app = express();
-const PORT = 80;
+const PORT = 5000;
 
 
 
@@ -12,14 +12,6 @@ app.listen(PORT, () => {
     start(); 
 });
 
-
-app.get("/", (req, res) => {
-    res.send("Servidor rodando...");
-});
-
-app.get("/health", (req, res) => {
-    res.json({ status: "ok", message: "Servidor ativo!" });
-});
 
 async function start() {
     const socket = await connect(app);
