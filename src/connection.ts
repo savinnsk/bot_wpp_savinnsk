@@ -17,7 +17,7 @@ export const connect = async (app) => {
         printQRInTerminal: true, 
         version,
         logger: pino({ level: "error" }),
-        auth: state, 
+        auth:state, 
         browser: ["Chrome (Linux)", "", ""],
         markOnlineOnConnect: true,
     });
@@ -30,12 +30,15 @@ export const connect = async (app) => {
     socket.ev.on("connection.update", (update) => {
         const { connection, lastDisconnect ,  qr } = update; 
 
+        socket.logger.info(socket.requestPairingCode, `${socket.requestPairingCode} 2: ${qr}`)
         if (qr) {
             qrcode.toDataURL(qr, (err, url) => {
                 if (!err) {
                     qrCodeData = url;
                 }
             });
+
+            
         }
 
         if (connection == "close" ) {
@@ -52,7 +55,7 @@ export const connect = async (app) => {
         res.json({ qr: qrCodeData });
     });
     app.get("/", (req, res) => {
-        res.sendFile(path.join(__dirname, "index.html"));
+        res.sendFile(path.join(__dirname, "public/index.html"));
     });
    
 
