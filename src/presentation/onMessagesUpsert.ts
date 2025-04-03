@@ -1,14 +1,7 @@
-import { proto } from "baileys";
 import { connect } from "../connection";
-
-
-
-export interface MessageFormatted  {
-    isFromMe: boolean | null | undefined;
-    remotejid: string | null | undefined;
-    nameOfSender: string | null | undefined;
-    message: proto.IMessage | null | undefined;
-}
+import { MessageFormatted } from "@/load";
+import { commandMapper } from "./commands";
+import { processSticker } from "./sendSticker";
 
 export interface MessageClient  {
     socket :  Awaited<ReturnType<typeof connect>>,
@@ -17,12 +10,25 @@ export interface MessageClient  {
 
 
 export const onMessagesUpsert =  async ({ socket, message } : MessageClient) => {
-    if(message.remotejid){
-    socket.sendMessage(message.remotejid, {
-        text:"test",
+    const commandIfExist = message?.message?.extendedTextMessage?.text?.match(/^\/\S+/)?.[0] || message?.message?.conversation?.match(/^\/\S+/)?.[0]
+    console.log("command",commandIfExist)
+
+    if (message?.message?.imageMessage) {
+       processSticker({socket,message})
+    }
+
+    if(commandIfExist){
+        return await commandMapper({socket , message},commandIfExist)       
+    }
+};
+
+
+export const sendMessage = async ({socket ,sendTo ,text}: 
+    {socket : Awaited<ReturnType<typeof connect>> , text : string , sendTo : string })=>{
+    
+        socket.sendMessage(sendTo,{
+        text:text,
         force: false,
         })
-    }
-    
-};
+} 
 

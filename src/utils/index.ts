@@ -1,22 +1,25 @@
 import { proto } from "baileys";
-import * as readline from "readline"; 
 import { MessageFormatted } from "../load";
 
 
-
-export const questions = (message) => {
-    const rl =  readline.createInterface({
-        input: process.stdin,
-        output: process.stdout, 
-    });
-
-    return new Promise((resolve) => rl.question(message, resolve));
-
-};
-
 export const onlyNumbers = (text : string) => text.replace(/[^0-9]/g, "");
 
-export const extractDataFromMessage = (webMessage) => {
+
+export const mapperMessage = (message :  proto.IWebMessageInfo[]) : MessageFormatted=> {
+    return {
+        isFromMe : message[0]['key'].fromMe,
+        remotejid : message[0]['key'].remoteJid,
+        id : message[0]['key'].id,
+        nameOfSender : message[0].pushName,
+        message :  message[0].message,
+    }
+
+}
+
+
+//deprecated
+
+/*export const extractDataFromMessage = (webMessage) => {
     const textMessage = webMessage .message?.conversation;
     const extendedTextMessage = webMessage.message?.extendedTextMessage
     const extendedTextMessageText = extendedTextMessage?.text;
@@ -62,14 +65,4 @@ export const extractDataFromMessage = (webMessage) => {
         commandName: commandWithoutPrefix,
         args,
     };
-};
-
-export const mapperMessage = (message :  proto.IWebMessageInfo[]) : MessageFormatted=> {
-    return {
-        isFromMe : message[0]['key'].fromMe,
-        remotejid : message[0]['key'].remoteJid,
-        nameOfSender : message[0].pushName,
-        message :  message[0].message,
-    }
-
-}
+}*/

@@ -6,11 +6,7 @@ import qrcode from "qrcode";
 let qrCodeData = "";
 
 export const connect = async (app) => {
-
-    const { state, saveCreds } = await useMultiFileAuthState(
-        path.resolve(path.dirname("."), '..', "assets", "auth", "bailey")
-    );
-
+    const { state, saveCreds } = await useMultiFileAuthState("./auth_info_baileys");
     const {version} = await fetchLatestBaileysVersion();
     
     const socket = makeWASocket({
