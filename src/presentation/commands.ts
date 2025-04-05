@@ -1,11 +1,22 @@
+import { responseFromIA } from "./IA";
 import { MessageClient, sendMessage } from "./onMessagesUpsert";
+import { processSticker } from "./sendSticker";
 
 
 export const commandMapper = async ({socket , message}: MessageClient ,command : string)=> {
+
+    let messageText =  message?.message?.extendedTextMessage?.text || message?.message?.conversation
+
     if(command == "/remover") return admGroupMembersActions({socket , message}, {action : "remove"})
+    if(command == "/promover") return admGroupMembersActions({socket , message}, {action : "promote"})
+    if(command == "/rebaixar") return admGroupMembersActions({socket , message}, {action : "demote"})
+    if(command == "/figura") return processSticker({socket,message})
+    if(command == "/ia") return responseFromIA( {socket , message},messageText)
+        
     return sendMessage({socket, text : `comando ${command} não existe`, sendTo : message.remotejid} )
 
 }
+
 
 
 export async function admGroupMembersActions({socket , message} : MessageClient ,{action} : {action : "promote" | "demote" | "remove"}) {

@@ -1,7 +1,7 @@
 import { connect } from "../connection";
 import { MessageFormatted } from "@/load";
 import { commandMapper } from "./commands";
-import { processSticker } from "./sendSticker";
+
 
 export interface MessageClient  {
     socket :  Awaited<ReturnType<typeof connect>>,
@@ -10,15 +10,11 @@ export interface MessageClient  {
 
 
 export const onMessagesUpsert =  async ({ socket, message } : MessageClient) => {
-    const commandIfExist = message?.message?.extendedTextMessage?.text?.match(/^\/\S+/)?.[0] || message?.message?.conversation?.match(/^\/\S+/)?.[0]
-    console.log("command",commandIfExist)
+    const commandIfExist = message?.message?.extendedTextMessage?.text?.match(/^\/\S+/)?.[0].toLowerCase() || message?.message?.conversation?.match(/^\/\S+/)?.[0].toLowerCase()
+    const commandImage = message?.message?.imageMessage?.caption?.match(/^\/\S+/)?.[0].toLowerCase()
 
-    if (message?.message?.imageMessage) {
-       processSticker({socket,message})
-    }
-
-    if(commandIfExist){
-        return await commandMapper({socket , message},commandIfExist)       
+    if(commandIfExist || commandImage){      
+        return await commandMapper({socket , message},commandIfExist || commandImage)       
     }
 };
 
