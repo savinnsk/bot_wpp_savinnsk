@@ -2,3 +2,5 @@ node_modules
 dist
 src/public/qrcode.png
 auth_info_baileys
+src/public/imagem.jpg
+src/public/imagem.webp

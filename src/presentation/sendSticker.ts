@@ -6,40 +6,46 @@ import  downloadContentFromMessage, { assertMediaContent, downloadMediaMessage }
 
 
 export const processSticker = async ({ socket , message} : MessageClient ) => {
-    console.log("Imagem recebida!");
+    try {
+
 
     // Extrair informações da imagem
     const mediaMessage = message.message.imageMessage;
     const sender = message.remotejid;
 
     // Baixar a imagem
-    const imagePath = await downloadImage(message, "imagem.jpg");
+    const imagePath = await downloadImage(message, "../public/imagem.jpg");
 
     // Converter em figurinha
     const stickerPath = await convertToSticker(imagePath);
 
     // Enviar figurinha de volta
     await sendSticker(socket, sender, stickerPath);
+    }catch(e){
+        console.log("error to processSticker", e)
+        return
+    }
 }
 
 
-export async function downloadContentWithTimeout(mediaMessage, timeoutMs = 5000) {
-    const content = assertMediaContent(mediaMessage.message);
-
-    if (!content) {
-        throw new Error("Mensagem não contém conteúdo de mídia.");
-    }
-
+export async function downloadContentWithTimeout(mediaMessage: any, timeoutMs = 5000) {
+    try {
     return Promise.race([
-        downloadMediaMessage(mediaMessage, "stream", null),
-        new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout ao baixar a imagem")), timeoutMs))
+        downloadMediaMessage(mediaMessage, "stream", {}),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Timeout ao baixar a imagem")), timeoutMs)
+        )
     ]);
+
+    } catch (error) {
+        console.log("error downloadContentWithTimeout", error)
+        return
+    }
 }
 
 export async function downloadImage(mediaMessage, filename) {
-    console.log("antes")
+    try {
     const stream = await downloadContentWithTimeout(mediaMessage);
-    console.log("dep")
     if (!stream) {
         throw new Error("Erro ao obter o stream da imagem");
     }
@@ -56,9 +62,13 @@ export async function downloadImage(mediaMessage, filename) {
     
     console.log("Imagem baixada:", filePath);
     return filePath;
+    }catch(e){
+        console.log("error downloadContentWithTimeout", e)
+    }
 }
 
 export async function convertToSticker(imagePath) {
+    try{
     const stickerPath = imagePath.replace(".jpg", ".webp");
 
     await sharp(imagePath)
@@ -68,9 +78,16 @@ export async function convertToSticker(imagePath) {
 
     console.log("Figurinha criada:", stickerPath);
     return stickerPath;
+    }catch(e){
+        console.log("error convertToSticker", e)
+    }
 }
 
 export async function sendSticker(sock, jid, stickerPath) {
+    try {
     await sock.sendMessage(jid, { sticker: { url: stickerPath } });
     console.log("Figurinha enviada para:", jid);
+    }catch(e){
+        console.log("error sendSticker", e)
+    }
 }

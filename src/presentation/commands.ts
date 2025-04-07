@@ -4,8 +4,7 @@ import { processSticker } from "./sendSticker";
 
 
 export const commandMapper = async ({socket , message}: MessageClient ,command : string)=> {
-
-    let messageText =  message?.message?.extendedTextMessage?.text || message?.message?.conversation
+    let messageText =  message?.message?.extendedTextMessage?.text.replace(/^\/ia\s*/, '') || message?.message?.conversation.replace(/^\/ia\s*/, '');
 
     if(command == "/remover") return admGroupMembersActions({socket , message}, {action : "remove"})
     if(command == "/promover") return admGroupMembersActions({socket , message}, {action : "promote"})

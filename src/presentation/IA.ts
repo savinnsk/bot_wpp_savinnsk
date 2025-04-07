@@ -13,8 +13,6 @@ export const responseFromIA = async ({socket , message}: MessageClient  , text :
 
   })
 
-  console.log(responseFromIA.data.response)
-
   return sendMessage({socket, text : `${responseFromIA.data.response}`, sendTo : message.remotejid} )
  
 
